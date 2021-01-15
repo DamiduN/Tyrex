@@ -29,6 +29,29 @@ class AuthService {
     }
   }
 
+    //register with email and password
+  Future registerWithEmailAndPassword(
+      String email,
+      String password,
+      String name,
+      String address,
+      String bikename,
+      String bikemodel,
+      String regNo) async {
+    try {
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      FirebaseUser user = result.user;
+      //create a new document for the user with uid
+      await DatabaseService(uid: user.uid).saveUserData(
+          name, address, email, bikename, bikemodel, regNo, password);
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   //sign out
   Future signOut() async {
     try {
