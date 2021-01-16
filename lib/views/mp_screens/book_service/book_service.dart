@@ -213,7 +213,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         });
                       },
                     ),
-                    Text("High Pressure Wash",
+                    Text("High Pressure Wash- Rs.800",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             fontSize: 18,
