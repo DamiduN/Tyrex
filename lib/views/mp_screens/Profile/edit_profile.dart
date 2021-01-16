@@ -1,5 +1,8 @@
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:tyrex/models/user.dart';
+import 'package:tyrex/srevices/database.dart';
 import 'package:tyrex/views/Auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:tyrex/views/Auth/widgets/button.dart';
@@ -7,6 +10,24 @@ import 'package:tyrex/views/Auth/widgets/textfield.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 class EditProfile extends StatefulWidget {
+  final String uid;
+  final String name;
+  final String address;
+  final String email;
+  final String bikename;
+  final String bikemodel;
+  final String regno;
+  final String password;
+
+  EditProfile(
+      {this.uid,
+      this.name,
+      this.address,
+      this.email,
+      this.bikename,
+      this.bikemodel,
+      this.regno,
+      this.password});
   @override
   _EditProfileState createState() => _EditProfileState();
 }
@@ -14,21 +35,33 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final _name = TextEditingController();
   final _address = TextEditingController();
-  final _phone = TextEditingController();
+  final _email = TextEditingController();
   final _bikename = TextEditingController();
   final _model = TextEditingController();
   final _regNo = TextEditingController();
   final _password = TextEditingController();
 
-  String _errorTxt = '';
-  String _errorEmail = '';
-  String _errorPhone = '';
   ProgressDialog pr;
 
   @override
+  void initState() {
+    print(widget.name);
+    setState(() {
+      _name.text = widget.name;
+      _address.text = widget.address;
+      _email.text = widget.email;
+      _bikename.text = widget.bikename;
+      _model.text = widget.bikemodel;
+      _regNo.text = widget.regno;
+      _password.text = widget.password;
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
-    _phone.dispose();
-    _errorTxt = "";
+    _email.dispose();
+
     super.dispose();
   }
 
@@ -36,6 +69,8 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     final screenheight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
+    final user = Provider.of<User>(context);
+
     pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
 
     pr.style(
@@ -66,59 +101,67 @@ class _EditProfileState extends State<EditProfile> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               // SizedBox(height: screenheight / 50),
-               Image.asset(
-                        'assets/images/profile.png',
-                        width: MediaQuery.of(context).size.width / 3,
-                        height: MediaQuery.of(context).size.height / 9,
-                      ),
-                      SizedBox(height: screenheight / 40),
+              Image.asset(
+                'assets/images/profile.png',
+                width: MediaQuery.of(context).size.width / 3,
+                height: MediaQuery.of(context).size.height / 9,
+              ),
+              SizedBox(height: screenheight / 40),
               CustomTextFieldTwo(
                 controller: _name,
                 hintTxt: 'Full name',
-                isPassword: true,
+                isPassword: false,
               ),
               SizedBox(height: screenheight / 50),
               CustomTextFieldTwo(
                 controller: _address,
                 hintTxt: 'Address',
-                isPassword: true,
+                isPassword: false,
               ),
               SizedBox(height: screenheight / 50),
-               CustomTextFieldTwo(
-                controller: _phone,
-                hintTxt: 'Mobile',
-                isPassword: true,
+              CustomTextFieldTwo(
+                controller: _email,
+                hintTxt: 'Email',
+                isPassword: false,
               ),
               SizedBox(height: screenheight / 50),
-               CustomTextFieldTwo(
+              CustomTextFieldTwo(
                 controller: _bikename,
                 hintTxt: 'Bike Name',
-                isPassword: true,
+                isPassword: false,
               ),
               SizedBox(height: screenheight / 50),
-               CustomTextFieldTwo(
+              CustomTextFieldTwo(
                 controller: _model,
                 hintTxt: 'Bike Model',
-                isPassword: true,
+                isPassword: false,
               ),
               SizedBox(height: screenheight / 50),
-               CustomTextFieldTwo(
+              CustomTextFieldTwo(
                 controller: _regNo,
                 hintTxt: 'Register No',
-                isPassword: true,
+                isPassword: false,
               ),
               SizedBox(height: screenheight / 50),
-               CustomTextFieldTwo(
+              CustomTextFieldTwo(
                 controller: _password,
                 hintTxt: 'Password',
                 isPassword: true,
               ),
               SizedBox(height: screenheight / 30),
-            
+
               GestureDetector(
-                onTap: () {
+                onTap: () async {
                   if (validate()) {
-                    
+                    await DatabaseService(uid: user.uid).saveUserData(
+                        _name.text,
+                        _address.text,
+                        _email.text,
+                        _bikename.text,
+                        _model.text,
+                        _regNo.text,
+                        _password.text);
+                    Navigator.pop(context);
                   }
                 },
                 child: Button(
@@ -149,7 +192,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   bool validate() {
-    if (_phone.text.isEmpty &&
+    if (_email.text.isEmpty &&
         _address.text.isEmpty &&
         _name.text.isEmpty &&
         _bikename.text.isEmpty &&
@@ -159,7 +202,7 @@ class _EditProfileState extends State<EditProfile> {
       errorDialog('ERROR', 'Fields cant be empty !');
 
       return false;
-    } else if (_phone.text.isEmpty ||
+    } else if (_email.text.isEmpty ||
         _address.text.isEmpty ||
         _name.text.isEmpty ||
         _bikename.text.isEmpty ||
@@ -168,14 +211,12 @@ class _EditProfileState extends State<EditProfile> {
         _password.text.isEmpty) {
       errorDialog('ERROR', 'Fields cant be empty !');
       return false;
-    } else if (_phone.text.length <= 9) {
+    } else if (_email.text.length <= 9) {
       errorDialog('ERROR', 'phone no should long 10 digits !');
 
       return false;
+    } else {
+      return true;
     }
-   else{
-
-     return true;
-   }
   }
 }
