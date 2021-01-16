@@ -133,11 +133,11 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   bool validate() {
     if (_passwordTwoOne.text == '' && _passwordTwo.text == '') {
-      errorDialog('ERROR', 'Fields cant be empty !');
+      errorDialog('ERROR', 'Fields cannot be empty !');
 
       return false;
     } else if (_passwordTwoOne.text == '' || _passwordTwo.text == '') {
-      errorDialog('ERROR', 'Fields cant be empty !');
+      errorDialog('ERROR', 'Fields cannot be empty !');
 
       return false;
     } else if (_passwordTwoOne.text != '' &&
