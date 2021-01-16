@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tyrex/views/Auth/widgets/button.dart';
+import 'package:tyrex/views/mp_screens/payments/payment_summary.dart';
 
 class BookingScreen extends StatefulWidget {
   BookingScreen({Key key}) : super(key: key);
@@ -12,7 +13,7 @@ enum ServiceType { fullservice, regularservice }
 
 class _BookingScreenState extends State<BookingScreen> {
   ServiceType _type = ServiceType.regularservice;
-
+  String sertype = "regular";
   bool oilchange = false;
   bool filters = false;
   bool normalwash = false;
@@ -46,6 +47,7 @@ class _BookingScreenState extends State<BookingScreen> {
               onChanged: (ServiceType value) {
                 setState(() {
                   _type = value;
+                  sertype = 'regular';
                   oilchange = false;
                   filters = false;
                   normalwash = false;
@@ -64,6 +66,7 @@ class _BookingScreenState extends State<BookingScreen> {
               onChanged: (ServiceType value) {
                 setState(() {
                   _type = value;
+                  sertype = 'full';
                   oilchange = true;
                   filters = true;
                   normalwash = true;
@@ -277,8 +280,18 @@ class _BookingScreenState extends State<BookingScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: GestureDetector(
               onTap: () {
-                // Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (context) => ResetPassword()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => PaymentSummary(
+                          amount: total,
+                          servicetype: sertype,
+                          oilchange: oilchange,
+                          filters: filters,
+                          normalwash: normalwash,
+                          repairdamage: repairdamage,
+                          highwash: highwash,
+                          freepickup: freepickup,
+                          freedrop: freedrop,
+                        )));
               },
               child: Button(
                 text: "Book Service",
