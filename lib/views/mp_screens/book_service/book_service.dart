@@ -72,7 +72,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   normalwash = true;
                   repairdamage = true;
                   highwash = true;
-                  total = 4000;
+                  total = 4800;
                 });
               },
             ),
