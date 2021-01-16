@@ -49,7 +49,7 @@ class _OrderHistoryState extends State<OrderHistory> {
           child: Column(
             children: [
               SizedBox(height: screenheight / 30),
-              Text("order History",
+              Text("Order History",
                   style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w800,
