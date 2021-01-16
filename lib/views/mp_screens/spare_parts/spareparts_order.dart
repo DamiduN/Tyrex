@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tyrex/views/Auth/widgets/button.dart';
+import 'package:tyrex/views/mp_screens/payments/order_payment_summary.dart';
 import 'package:tyrex/views/mp_screens/payments/payment_summary.dart';
 
 class SparePartsOrder extends StatefulWidget {
@@ -10,6 +11,7 @@ class SparePartsOrder extends StatefulWidget {
 }
 
 class _SparePartsOrderState extends State<SparePartsOrder> {
+  bool all = false;
   bool buzzer = false;
   bool crashGuard = false;
   bool engineGuard = false;
@@ -44,19 +46,20 @@ class _SparePartsOrderState extends State<SparePartsOrder> {
                 Text("Payment Summary",
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
-                        SizedBox(height: screenheight / 40),
+                SizedBox(height: screenheight / 40),
                 ListTile(
-                  title: const Text('Select All Parts',style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                  title: const Text('Select All Parts',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
                   leading: Checkbox(
                     checkColor: Colors.greenAccent,
                     activeColor: Colors.red,
-                    value: this.buzzer,
+                    value: this.all,
                     onChanged: (bool value) {
                       if (value) {
                         setState(() {
                           total += 20500;
-                          this.buzzer = value;
+                          this.all = value;
                           buzzer = true;
                           crashGuard = true;
                           engineGuard = true;
@@ -457,7 +460,23 @@ class _SparePartsOrderState extends State<SparePartsOrder> {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => PaymentSummary(amount: total)));
+                          builder: (context) => OrderPaymentSummary(
+                              amount: total,
+                              buzzer: buzzer,
+                              crashGuard: crashGuard,
+                              engineGuard: engineGuard,
+                              frontLinear: frontLinear,
+                              gearLeaver: gearLeaver,
+                              handGrip: handGrip,
+                              helmetLock: helmetLock,
+                              helmet: helmet,
+                              numberPlateCover: numberPlateCover,
+                              pillionHolder: pillionHolder,
+                              seatCover: seatCover,
+                              tankCover: tankCover,
+                              breakpads: breakpads,
+                              signallightCup: signallightCup,
+                              headligth: headligth)));
                     },
                     child: Button(
                       text: "Order",

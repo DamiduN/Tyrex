@@ -1,13 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookingHistory extends StatefulWidget {
-  BookingHistory({Key key}) : super(key: key);
+  final String uid;
+  BookingHistory({Key key, this.uid}) : super(key: key);
 
   @override
   _BookingHistoryState createState() => _BookingHistoryState();
 }
 
 class _BookingHistoryState extends State<BookingHistory> {
+  Map data;
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.uid);
+    fetchData();
+  }
+
+  fetchData() {
+    final CollectionReference bookingCollection =
+        Firestore.instance.collection('bookings');
+
+    bookingCollection
+        .where('uid', isEqualTo: widget.uid)
+        .snapshots()
+        .listen((value) {
+      if (value.documents.isNotEmpty) {
+        setState(() {
+          data = value.documents.asMap();
+        });
+        print(data[2]['total']);
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenheight = MediaQuery.of(context).size.height;
@@ -25,72 +55,55 @@ class _BookingHistoryState extends State<BookingHistory> {
                       fontWeight: FontWeight.w800,
                       color: Colors.black)),
               SizedBox(height: screenheight / 30),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                width: screenwidth,
-                color: Colors.black,
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Service type - ...............",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white)),
-                    SizedBox(height: screenheight / 40),
-                    Text("Full total - .............",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white)),
-                    SizedBox(height: screenheight / 40),
-                    // Text("Registration no - ..............",
-                    //     textAlign: TextAlign.left,
-                    //     style: TextStyle(
-                    //         fontSize: 18,
-                    //         fontWeight: FontWeight.w900,
-                    //         color: Colors.white)),
-                  ],
-                ),
-              ),
-                Container(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                width: screenwidth,
-                color: Colors.black,
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Service type - ...............",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white)),
-                    SizedBox(height: screenheight / 40),
-                    Text("Full total - .............",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white)),
-                    SizedBox(height: screenheight / 40),
-                    // Text("Registration no - ..............",
-                    //     textAlign: TextAlign.left,
-                    //     style: TextStyle(
-                    //         fontSize: 18,
-                    //         fontWeight: FontWeight.w900,
-                    //         color: Colors.white)),
-                  ],
-                ),
-              ),
+              data != null
+                  ? Expanded(
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom:8.0),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              margin: EdgeInsets.symmetric(horizontal: 30),
+                              width: screenwidth,
+                              color: Colors.black,
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      "Service type - ${data[index]['servicetype']} Service",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.white)),
+                                  SizedBox(height: screenheight / 40),
+                                  Text("Full total - Rs.${data[index]['total']}",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.white)),
+                                  SizedBox(height: screenheight / 40),
+                                  Text(
+                                      "Payment type - ${data[index]['paymenttype']} payment",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.white)),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  : CircularProgressIndicator(),
             ],
           ),
         ),

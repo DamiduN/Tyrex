@@ -35,3 +35,42 @@ class Button extends StatelessWidget {
     );
   }
 }
+
+class ButtonTwo extends StatelessWidget {
+  final String text;
+  final color;
+  final btnTxtColor;
+  final width;
+  final height;
+  final double fontsize;
+  ButtonTwo(
+      {Key key,
+      this.text,
+      this.color,
+      this.btnTxtColor,
+      this.width,
+      this.height,
+      this.fontsize
+      })
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+          color: color,
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)]),
+      child: Padding(
+        padding: EdgeInsets.only(left: width, right: width),
+        child: Text(text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: fontsize, color: btnTxtColor, fontWeight: FontWeight.w500)
+                ),
+      ),
+    );
+  }
+}
