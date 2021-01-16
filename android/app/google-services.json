@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "56544948439",
+    "project_id": "tyrex-c9d47",
+    "storage_bucket": "tyrex-c9d47.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56544948439:android:fdb6d0b0e014496dbc8092",
+        "android_client_info": {
+          "package_name": "com.ezignment.mad_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56544948439-v88qcb4baeejmvg9010f2irk0o3j7s3t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAxYhO2MVAFfSANWfcPiyGonFJgUOUC_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "56544948439-v88qcb4baeejmvg9010f2irk0o3j7s3t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
