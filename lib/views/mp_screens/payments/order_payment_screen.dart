@@ -1,0 +1,256 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_credit_card/credit_card_form.dart';
+import 'package:flutter_credit_card/credit_card_model.dart';
+import 'package:flutter_credit_card/credit_card_widget.dart';
+import 'package:tyrex/views/mp_screens/home_screen/home_screen.dart';
+import 'package:tyrex/srevices/database.dart';
+import 'package:provider/provider.dart';
+import 'package:tyrex/models/user.dart';
+
+class OrderPaymentScreen extends StatefulWidget {
+  final double amount;
+  bool buzzer;
+  bool crashGuard;
+  bool engineGuard;
+  bool frontLinear;
+  bool gearLeaver;
+  bool handGrip;
+  bool helmetLock;
+  bool helmet;
+  bool numberPlateCover;
+  bool pillionHolder;
+  bool seatCover;
+  bool tankCover;
+  bool breakpads;
+  bool signallightCup;
+  bool headligth;
+  OrderPaymentScreen({
+    Key key,
+    this.amount,
+    this.buzzer,
+    this.crashGuard,
+    this.engineGuard,
+    this.frontLinear,
+    this.gearLeaver,
+    this.handGrip,
+    this.helmetLock,
+    this.helmet,
+    this.numberPlateCover,
+    this.pillionHolder,
+    this.seatCover,
+    this.tankCover,
+    this.breakpads,
+    this.signallightCup,
+    this.headligth,
+  }) : super(key: key);
+
+  @override
+  _OrderPaymentScreenState createState() => _OrderPaymentScreenState();
+}
+
+class _OrderPaymentScreenState extends State<OrderPaymentScreen> {
+  String cardNumber = '';
+  String expiryDate = '';
+  String cardHolderName = '';
+  String cvvCode = '';
+  bool isCvvFocused = false;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  // Default Radio Button Selected Item When App Starts.
+  String radioButtonItem = 'Visa';
+
+  // Group Value for Radio Button.
+  int id = 1;
+
+  @override
+  void initState() {
+    print(widget.amount.toString());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+    final screenheight = MediaQuery.of(context).size.height;
+    final screenwidth = MediaQuery.of(context).size.width;
+    return Scaffold(
+      backgroundColor: Colors.yellow,
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            CreditCardWidget(
+              cardNumber: cardNumber,
+              expiryDate: expiryDate,
+              cardHolderName: cardHolderName,
+              cvvCode: cvvCode,
+              showBackView: isCvvFocused,
+              obscureCardNumber: true,
+              obscureCardCvv: true,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Radio(
+                          value: 1,
+                          groupValue: id,
+                          onChanged: (val) {
+                            setState(() {
+                              radioButtonItem = 'Visa';
+                              id = 1;
+                            });
+                          },
+                        ),
+                        Container(
+                          height: screenheight / 12,
+                          width: screenwidth / 6,
+                          decoration: BoxDecoration(
+                              borderRadius: new BorderRadius.circular(8.0),
+                              image: DecorationImage(
+                                  image:
+                                      AssetImage('assets/images/visacard.png'),
+                                  fit: BoxFit.fill)),
+                        ),
+                        Radio(
+                          value: 2,
+                          groupValue: id,
+                          onChanged: (val) {
+                            setState(() {
+                              radioButtonItem = 'Master';
+                              id = 2;
+                            });
+                          },
+                        ),
+                        Container(
+                          height: screenheight / 12,
+                          width: screenwidth / 5,
+                          decoration: BoxDecoration(
+                              borderRadius: new BorderRadius.circular(8.0),
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/mastercard.png'),
+                                  fit: BoxFit.fill)),
+                        ),
+                      ],
+                    ),
+                    CreditCardForm(
+                      formKey: formKey,
+                      obscureCvv: true,
+                      obscureNumber: true,
+                      cardNumberDecoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Number',
+                        hintText: 'XXXX XXXX XXXX XXXX',
+                      ),
+                      expiryDateDecoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Expired Date',
+                        hintText: 'XX/XX',
+                      ),
+                      cvvCodeDecoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'CVV',
+                        hintText: 'XXX',
+                      ),
+                      cardHolderDecoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Card Holder',
+                      ),
+                      onCreditCardModelChange: onCreditCardModelChange,
+                    ),
+                    Text(
+                      'Total Amount :-  ${widget.amount}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'halter',
+                        fontSize: 14,
+                        package: 'flutter_credit_card',
+                      ),
+                    ),
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Container(
+                        margin: const EdgeInsets.all(8),
+                        child: const Text(
+                          'Complete Payment',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'halter',
+                            fontSize: 14,
+                            package: 'flutter_credit_card',
+                          ),
+                        ),
+                      ),
+                      color: Colors.black,
+                      onPressed: () async {
+                        if (formKey.currentState.validate()) {
+                          await DatabaseService(uid: user.uid)
+                              .saveOrder(
+                                  widget.buzzer,
+                                  widget.crashGuard,
+                                  widget.engineGuard,
+                                  widget.frontLinear,
+                                  widget.gearLeaver,
+                                  widget.handGrip,
+                                  widget.helmetLock,
+                                  widget.helmet,
+                                  widget.numberPlateCover,
+                                  widget.pillionHolder,
+                                  widget.seatCover,
+                                  widget.tankCover,
+                                  widget.breakpads,
+                                  widget.signallightCup,
+                                  widget.headligth,
+                                  widget.amount,
+                                  'card')
+                              .whenComplete(() {
+                            successDialog('SUCCESS', 'Order Successful !');
+                          });
+                        } else {
+                          print('invalid!');
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<dynamic> successDialog(String title, String dec) {
+    return AwesomeDialog(
+        context: context,
+        dialogType: DialogType.SUCCES,
+        animType: AnimType.TOPSLIDE,
+        tittle: title,
+        desc: dec,
+        btnOkText: 'Ok',
+        btnCancelText: 'Cancel',
+        btnCancelOnPress: () {},
+        btnOkOnPress: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        }).show();
+  }
+
+  void onCreditCardModelChange(CreditCardModel creditCardModel) {
+    setState(() {
+      cardNumber = creditCardModel.cardNumber;
+      expiryDate = creditCardModel.expiryDate;
+      cardHolderName = creditCardModel.cardHolderName;
+      cvvCode = creditCardModel.cvvCode;
+      isCvvFocused = creditCardModel.isCvvFocused;
+    });
+  }
+}
