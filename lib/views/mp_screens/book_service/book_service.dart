@@ -268,7 +268,7 @@ class _BookingScreenState extends State<BookingScreen> {
           SizedBox(height: screenheight / 30),
           Divider(),
           Container(
-            child: Text("Bill Total Rs.$total",
+            child: Text("Total Bill Rs.$total",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     fontSize: 25,
