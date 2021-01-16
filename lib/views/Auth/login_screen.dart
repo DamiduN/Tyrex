@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     setState(() {
                                       loading = false;
                                     });
-                                    errorDialog('ERROR', 'Coudlnt sign in !');
+                                    errorDialog('ERROR', 'Failed to Sign In !');
                                   } else {
                                     print('signed in');
                                     print(result.uid);
@@ -204,18 +204,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool validate() {
     if (_email.text == '' && _password.text == '') {
-      errorDialog('ERROR', 'Fields cant be empty !');
+      errorDialog('ERROR', 'Fields cannot be empty !');
 
       return false;
     }
     // else if (_email.text.length <= 9) {
-    //   errorDialog('ERROR', 'Mobile no should long 10 digits !');
+    //   errorDialog('ERROR', 'Enter a valid E-mail Address !');
 
     //   return false;
     // }
 
     else if (_email.text == '' || _password.text == '') {
-      errorDialog('ERROR', 'Fields cant be empty !');
+      errorDialog('ERROR', 'Fields cannot be empty !');
 
       return false;
     } else if (_email.text != '' && _password.text != '') {
