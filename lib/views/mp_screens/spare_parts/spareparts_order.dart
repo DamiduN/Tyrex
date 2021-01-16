@@ -43,7 +43,7 @@ class _SparePartsOrderState extends State<SparePartsOrder> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: screenheight / 20),
-                Text("Payment Summary",
+                Text("Order Spare Parts",
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
                 SizedBox(height: screenheight / 40),
