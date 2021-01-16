@@ -59,7 +59,7 @@ class _BookingScreenState extends State<BookingScreen> {
             ),
           ),
           ListTile(
-            title: const Text('Full Service - Rs.7000'),
+            title: const Text('Full Service - Rs.4800'),
             leading: Radio(
               value: ServiceType.fullservice,
               groupValue: _type,

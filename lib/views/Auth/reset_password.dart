@@ -145,7 +145,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         (_passwordTwoOne.text == _passwordTwo.text)) {
       return true;
     } else{
-       errorDialog('ERROR', 'passwords doesnot match !');
+       errorDialog('ERROR', 'Passwords Doesnot Match !');
     }
   }
 }
