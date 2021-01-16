@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void initializeAuth() {
-    Future.delayed(Duration(seconds: 6), () {
+    Future.delayed(Duration(seconds: 4), () {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => Wrapper()),
           (Route<dynamic> route) => false);
