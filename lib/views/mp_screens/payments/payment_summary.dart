@@ -228,13 +228,13 @@ class _PaymentSummaryState extends State<PaymentSummary> {
     if (_amount.text == '' &&
         _serviceTax.text == '' &&
         _totalAmount.text == '') {
-      errorDialog('ERROR', 'Fields cant be empty !');
+      errorDialog('ERROR', 'Fields cannot be empty !');
 
       return false;
     } else if (_amount.text == '' ||
         _serviceTax.text == '' ||
         _totalAmount.text == '') {
-      errorDialog('ERROR', 'Fields cant be empty !');
+      errorDialog('ERROR', 'Fields cannot be empty !');
 
       return false;
     } else if (_amount.text != '' &&
