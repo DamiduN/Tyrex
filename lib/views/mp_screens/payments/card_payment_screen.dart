@@ -4,10 +4,32 @@ import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:tyrex/views/mp_screens/home_screen/home_screen.dart';
+import 'package:tyrex/srevices/database.dart';
+import 'package:provider/provider.dart';
+import 'package:tyrex/models/user.dart';
 
 class CardPaymentScreen extends StatefulWidget {
   final double amount;
-  CardPaymentScreen({Key key, this.amount}) : super(key: key);
+  final String servicetype;
+  bool oilchange;
+  bool filters;
+  bool normalwash;
+  bool repairdamage;
+  bool highwash;
+  bool freepickup;
+  bool freedrop;
+  CardPaymentScreen(
+      {Key key,
+      this.amount,
+      this.servicetype,
+      this.oilchange,
+      this.filters,
+      this.normalwash,
+      this.repairdamage,
+      this.highwash,
+      this.freepickup,
+      this.freedrop})
+      : super(key: key);
 
   @override
   _CardPaymentScreenState createState() => _CardPaymentScreenState();
@@ -28,7 +50,14 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
   int id = 1;
 
   @override
+  void initState() {
+     print(widget.servicetype);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
     final screenheight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -121,14 +150,14 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                       onCreditCardModelChange: onCreditCardModelChange,
                     ),
                     Text(
-                          'Total Amount :-  ${widget.amount}',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'halter',
-                            fontSize: 14,
-                            package: 'flutter_credit_card',
-                          ),
-                        ),
+                      'Total Amount :-  ${widget.amount}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'halter',
+                        fontSize: 14,
+                        package: 'flutter_credit_card',
+                      ),
+                    ),
                     RaisedButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
@@ -146,10 +175,24 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                         ),
                       ),
                       color: Colors.black,
-                      onPressed: () {
+                      onPressed: () async {
                         if (formKey.currentState.validate()) {
-                          print('valid!');
-                          successDialog('SUCCESS', 'Successfully booked your service !');
+                          await DatabaseService(uid: user.uid)
+                              .saveBooking(
+                                  widget.servicetype,
+                                  widget.oilchange,
+                                  widget.filters,
+                                  widget.normalwash,
+                                  widget.repairdamage,
+                                  widget.highwash,
+                                  widget.freepickup,
+                                  widget.freedrop,
+                                  widget.amount,
+                                  'card')
+                              .whenComplete(() {
+                            successDialog('SUCCESS',
+                                'Successfully booked your service !');
+                          });
                         } else {
                           print('invalid!');
                         }
@@ -165,21 +208,20 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
     );
   }
 
-   Future<dynamic> successDialog(String title, String dec) {
+  Future<dynamic> successDialog(String title, String dec) {
     return AwesomeDialog(
-            context: context,
-            dialogType: DialogType.SUCCES,
-            animType: AnimType.TOPSLIDE,
-            tittle: title,
-            desc: dec,
-            btnOkText: 'Ok',
-            btnCancelText: 'Cancel',
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {
-               Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => HomeScreen()));
-            })
-        .show();
+        context: context,
+        dialogType: DialogType.SUCCES,
+        animType: AnimType.TOPSLIDE,
+        tittle: title,
+        desc: dec,
+        btnOkText: 'Ok',
+        btnCancelText: 'Cancel',
+        btnCancelOnPress: () {},
+        btnOkOnPress: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        }).show();
   }
 
   void onCreditCardModelChange(CreditCardModel creditCardModel) {
