@@ -20,4 +20,22 @@ class DatabaseService {
       'password': password
     });
   }
+
+   //userdata from snapshot
+  UserData _userDataFromSnapeshot(DocumentSnapshot snapshot) {
+    return UserData(
+        uid: uid,
+        name: snapshot.data['name'],
+        address: snapshot.data['address'],
+        email: snapshot.data['email'],
+        bikename: snapshot.data['bikename'],
+        bikemodel: snapshot.data['bikemodel'],
+        regno: snapshot.data['regno'],
+        password: snapshot.data['password']);
+  }
+
+  //get user doc stream
+  Stream<UserData> get userData {
+    return userCollection.document(uid).snapshots().map(_userDataFromSnapeshot);
+  }
 }
