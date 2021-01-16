@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tyrex/models/user.dart';
+import 'package:tyrex/srevices/authentication.dart';
+import 'package:tyrex/views/Auth/login_screen.dart';
 import 'package:tyrex/views/Auth/widgets/button.dart';
+import 'package:tyrex/views/mp_screens/about_us.dart';
+import 'package:tyrex/views/mp_screens/book_service/book_service.dart';
+import 'package:tyrex/views/mp_screens/book_service/booking_history.dart';
+import 'package:tyrex/views/mp_screens/contact_us.dart';
+import 'package:tyrex/views/mp_screens/profile/profile.dart';
+import 'package:tyrex/views/mp_screens/spare_parts/order_history.dart';
+import 'package:tyrex/views/mp_screens/spare_parts/spareparts_order.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -9,12 +20,71 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
+     final user = Provider.of<User>(context);
     final screenheight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.yellow,
+      drawer: Drawer(
+          child: ListView(
+        children: <Widget>[
+          UserAccountsDrawerHeader(
+            decoration: BoxDecoration(color: Colors.black),
+            accountName: Text("Nuwan Perera"),
+            accountEmail: Text("07723311211"),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Colors.orange,
+              child: Text(
+                "U",
+                style: TextStyle(fontSize: 40.0),
+              ),
+            ),
+          ),
+          ListTile(leading: Icon(Icons.home), title: Text("Home")),
+          ListTile(
+            leading: Icon(Icons.person_pin),
+            title: Text("My profile"),
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => MyProfile()));
+            },
+          ),
+          ListTile(leading: Icon(Icons.list), title: Text("Orders"),onTap: (){
+            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SparePartsOrder()));
+          }),
+           ListTile(leading: Icon(Icons.list), title: Text("Services"),onTap: (){
+            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => BookingScreen()));
+          }),
+          ListTile(leading: Icon(Icons.payment), title: Text("Orders History"),onTap: (){
+            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => OrderHistory()));
+          }),
+          ListTile(leading: Icon(Icons.contacts), title: Text("Contact Us"),onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => ContactUs()));
+            },),
+          ListTile(
+            leading: Icon(Icons.emoji_emotions),
+            title: Text("About Us"),
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => AboutUs()));
+            },
+          ),
+          ListTile(leading: Icon(Icons.logout), title: Text("Logout"), onTap: () async {
+             await _auth.signOut();
+
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => LoginScreen()));
+            },),
+        ],
+      )),
       body: Container(
         child: Center(
           child: Column(
@@ -31,7 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   buildTile('assets/images/p1.png', "Book Service", () {
-                    print("dsfsdf");
+                     Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => BookingScreen()));
                   }),
                   buildTile('assets/images/p2.png', "Free Pickup", () {
                     print("dsfsdf");
@@ -46,12 +117,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     print("dsfsdf");
                   }),
                   buildTile('assets/images/p4.png', "Spare Parts Order", () {
-                    print("dsfsdf");
+                     Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SparePartsOrder()));
                   })
                 ],
               ),
               SizedBox(height: screenheight / 30),
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   buildTile('assets/images/p5.png', "Track Bike", () {
@@ -62,15 +134,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   })
                 ],
               ),
-               SizedBox(height: screenheight / 30),
-               Row(
+              SizedBox(height: screenheight / 30),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  buildTile('assets/images/p7.png', "Payment Order", () {
-                    print("dsfsdf");
+                  buildTile('assets/images/p7.png', "Booking History", () {
+                   Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => BookingHistory(uid: user.uid)));
                   }),
-                  buildTile('assets/images/p8.png', "Free drop", () {
-                    print("dsfsdf");
+                  buildTile('assets/images/p8.png', "Order History", () {
+                     Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => OrderHistory()));
                   })
                 ],
               ),
