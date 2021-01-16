@@ -199,7 +199,7 @@ class _EditProfileState extends State<EditProfile> {
         _model.text.isEmpty &&
         _regNo.text.isEmpty &&
         _password.text.isEmpty) {
-      errorDialog('ERROR', 'Fields cant be empty !');
+      errorDialog('ERROR', 'Fields cannott be empty !');
 
       return false;
     } else if (_email.text.isEmpty ||
@@ -209,10 +209,10 @@ class _EditProfileState extends State<EditProfile> {
         _model.text.isEmpty ||
         _regNo.text.isEmpty ||
         _password.text.isEmpty) {
-      errorDialog('ERROR', 'Fields cant be empty !');
+      errorDialog('ERROR', 'Fields cannot be empty !');
       return false;
     } else if (_email.text.length <= 9) {
-      errorDialog('ERROR', 'phone no should long 10 digits !');
+      errorDialog('ERROR', 'Please enter a valid E-mail address !');
 
       return false;
     } else {
