@@ -193,9 +193,9 @@ class _EditProfileState extends State<EditProfile> {
         _name.text.isEmpty &&
         _bikename.text.isEmpty &&
         _model.text.isEmpty &&
-        _regNo.text.isEmpty &&
-        _password.text.isEmpty) {
-      errorDialog('ERROR', 'Fields cannott be empty !');
+        _regNo.text.isEmpty 
+       ) {
+      errorDialog('ERROR', 'Fields cannot be empty !');
 
       return false;
     } else if (_email.text.isEmpty ||
@@ -203,13 +203,9 @@ class _EditProfileState extends State<EditProfile> {
         _name.text.isEmpty ||
         _bikename.text.isEmpty ||
         _model.text.isEmpty ||
-        _regNo.text.isEmpty ||
-        _password.text.isEmpty) {
+        _regNo.text.isEmpty 
+        ) {
       errorDialog('ERROR', 'Fields cannot be empty !');
-      return false;
-    } else if (_email.text.length <= 9) {
-      errorDialog('ERROR', 'Please enter a valid E-mail address !');
-
       return false;
     } else {
       return true;

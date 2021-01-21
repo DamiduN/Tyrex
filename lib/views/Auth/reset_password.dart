@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:tyrex/models/user.dart';
 import 'package:tyrex/srevices/database.dart';
+import 'package:tyrex/views/Auth/login_screen.dart';
 import 'package:tyrex/views/Auth/widgets/button.dart';
 import 'package:tyrex/views/Auth/widgets/textfield.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                       onTap: () async {
                       
                         auth.sendPasswordResetEmail(email: _email.text);
+                         successDialog('SUCCESS',
+                                'Please check your E-mail !');
+                         
+                        
                       },
                       child: Button(
                         text: "Send request",
@@ -91,7 +96,10 @@ class _ResetPasswordState extends State<ResetPassword> {
             btnOkText: 'Ok',
             btnCancelText: 'Cancel',
             btnCancelOnPress: () {},
-            btnOkOnPress: () {})
+            btnOkOnPress: () {
+              Navigator.pop(context);
+              // Navigator.pop(context);
+            })
         .show();
   }
 
