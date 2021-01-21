@@ -61,10 +61,15 @@ class _ResetPasswordState extends State<ResetPassword> {
                     SizedBox(height: screenheight / 20),
                     GestureDetector(
                       onTap: () async {
-                      
-                        auth.sendPasswordResetEmail(email: _email.text);
+
+                        if(validate()){
+                           auth.sendPasswordResetEmail(email: _email.text);
                          successDialog('SUCCESS',
                                 'Please check your E-mail !');
+
+                        }
+                      
+                       
                          
                         
                       },
