@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: <Widget>[
           UserAccountsDrawerHeader(
             decoration: BoxDecoration(color: Colors.black),
-            accountName: Text("Nuwan Perera"),
+            accountName: Text("Damindu Nehan"),
             accountEmail: Text("07723311211"),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.orange,
