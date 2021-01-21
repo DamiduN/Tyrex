@@ -35,11 +35,11 @@ class _HomeScreenState extends State<HomeScreen> {
           UserAccountsDrawerHeader(
             decoration: BoxDecoration(color: Colors.black),
             accountName: Text("Damindu Nehan"),
-            accountEmail: Text("07723311211"),
+            accountEmail: Text("0772331121"),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.orange,
               child: Text(
-                "U",
+                "D",
                 style: TextStyle(fontSize: 40.0),
               ),
             ),
