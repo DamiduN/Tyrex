@@ -16,15 +16,14 @@ class DatabaseService {
       Firestore.instance.collection('orders');
 
   Future saveUserData(String name, String address, String email,
-      String bikename, String bikemodel, String regNo, String password) async {
+      String bikename, String bikemodel, String regNo) async {
     return await userCollection.document(uid).setData({
       'name': name,
       'address': address,
       'email': email,
       'bikename': bikename,
       'bikemodel': bikemodel,
-      'regno': regNo,
-      'password': password
+      'regno': regNo
     });
   }
 

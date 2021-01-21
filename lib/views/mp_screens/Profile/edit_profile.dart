@@ -143,11 +143,7 @@ class _EditProfileState extends State<EditProfile> {
                 isPassword: false,
               ),
               SizedBox(height: screenheight / 50),
-              CustomTextFieldTwo(
-                controller: _password,
-                hintTxt: 'Password',
-                isPassword: true,
-              ),
+             
               SizedBox(height: screenheight / 30),
 
               GestureDetector(
@@ -160,7 +156,7 @@ class _EditProfileState extends State<EditProfile> {
                         _bikename.text,
                         _model.text,
                         _regNo.text,
-                        _password.text);
+);
                     Navigator.pop(context);
                   }
                 },

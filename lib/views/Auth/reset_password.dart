@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:tyrex/models/user.dart';
 import 'package:tyrex/srevices/database.dart';
 import 'package:tyrex/views/Auth/widgets/button.dart';
 import 'package:tyrex/views/Auth/widgets/textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 class ResetPassword extends StatefulWidget {
   @override
@@ -14,14 +14,13 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-  final _passwordTwoOne = TextEditingController();
-  final _passwordTwo = TextEditingController();
+  final _email = TextEditingController();
 
-  ProgressDialog pr;
+  final auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
-    _passwordTwoOne.dispose();
+    _email.dispose();
     super.dispose();
   }
 
@@ -30,19 +29,6 @@ class _ResetPasswordState extends State<ResetPassword> {
     final screenheight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
     final user = Provider.of<User>(context);
-    pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
-
-    pr.style(
-        message: 'Verifying Phone...',
-        borderRadius: 10.0,
-        progressWidget: Container(
-          height: 30,
-          width: 30,
-          child: CircularProgressIndicator(),
-        ),
-        elevation: 10.0,
-        insetAnimCurve: Curves.easeInOut,
-        progressTextStyle: TextStyle(fontFamily: 'Montserrat'));
 
     return Scaffold(
       backgroundColor: Colors.yellow,
@@ -67,28 +53,18 @@ class _ResetPasswordState extends State<ResetPassword> {
                             fontSize: 20, fontWeight: FontWeight.w500)),
                     SizedBox(height: screenheight / 20),
                     CustomTextFieldTwo(
-                      controller: _passwordTwoOne,
-                      hintTxt: 'New Password',
-                      isPassword: true,
-                    ),
-                    SizedBox(height: screenheight / 20),
-                    CustomTextFieldTwo(
-                      controller: _passwordTwo,
-                      hintTxt: 'Repeat Password',
-                      isPassword: true,
+                      controller: _email,
+                      hintTxt: 'Add your email',
+                      isPassword: false,
                     ),
                     SizedBox(height: screenheight / 20),
                     GestureDetector(
                       onTap: () async {
-                        print(user.uid);
-                        // if (validate()) {
-                        //   await DatabaseService(uid: user.uid)
-                        //       .save(_passwordTwo.text);
-                        //   Navigator.pop(context);
-                        // }
+                      
+                        auth.sendPasswordResetEmail(email: _email.text);
                       },
                       child: Button(
-                        text: "Update password",
+                        text: "Send request",
                         color: Colors.white,
                         btnTxtColor: Colors.black,
                         height: screenheight / 15,
@@ -132,20 +108,12 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   bool validate() {
-    if (_passwordTwoOne.text == '' && _passwordTwo.text == '') {
-      errorDialog('ERROR', 'Fields cannot be empty !');
+    if (_email.text == '') {
+      errorDialog('ERROR', 'Field cant be empty !');
 
       return false;
-    } else if (_passwordTwoOne.text == '' || _passwordTwo.text == '') {
-      errorDialog('ERROR', 'Fields cannot be empty !');
-
-      return false;
-    } else if (_passwordTwoOne.text != '' &&
-        _passwordTwo.text != '' &&
-        (_passwordTwoOne.text == _passwordTwo.text)) {
+    } else {
       return true;
-    } else{
-       errorDialog('ERROR', 'Passwords Doesnot Match !');
     }
   }
 }

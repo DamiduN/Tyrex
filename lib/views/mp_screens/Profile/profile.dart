@@ -82,12 +82,15 @@ class _MyProfileState extends State<MyProfile> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.w900,
                                     color: Colors.black)),
-                            Text("${userData.email}",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.black)),
+                            SizedBox(
+                              width: screenwidth / 2,
+                              child: Text("${userData.email}",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.black)),
+                            ),
                             Text("${userData.regno}",
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
@@ -154,21 +157,7 @@ class _MyProfileState extends State<MyProfile> {
                         ],
                       ),
                     ),
-                    // Padding(
-                    //   padding:
-                    //       EdgeInsets.symmetric(horizontal: 40, vertical: 40),
-                    //   child: GestureDetector(
-                    //     onTap: () {},
-                    //     child: ButtonTwo(
-                    //       text: "Review",
-                    //       color: Colors.white,
-                    //       btnTxtColor: Colors.black,
-                    //       fontsize: 12,
-                    //       height: MediaQuery.of(context).size.height / 20,
-                    //       width: MediaQuery.of(context).size.width / 16,
-                    //     ),
-                    //   ),
-                    // ),
+                   
                   ],
                 ),
               );
